@@ -72,4 +72,4 @@ fig.add_trace(go.Scatter(x=t_eje, y=p50, mode='lines', name='Rentabilidad Median
 fig.add_trace(go.Scatter(x=t_eje, y=aportado, mode='lines', name='El Dinero Guardado en el Cajón', line=dict(color='#ef4444', width=2, dash='dash')))
 
 fig.update_layout(template="simple_white", hovermode="x unified", height=500, margin=dict(t=20, b=50), yaxis_title="Patrimonio Acumulado (€)", legend=leyenda_movil)
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, use_container_width=True, config={'scrollZoom': False, 'displayModeBar': False, 'staticPlot': True})
