@@ -4,7 +4,7 @@ import numpy as np
 import plotly.graph_objects as go
 
 # ==========================================
-# CONFIGURACIÓN Y ESTILOS (Versión Quirúrgica)
+# CONFIGURACIÓN Y ESTILOS (Versión Quirúrgica) 
 # ==========================================
 st.set_page_config(page_title="RFData - Simulador Montecarlo", page_icon="📈", layout="wide")
 
