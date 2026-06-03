@@ -35,11 +35,11 @@ with st.sidebar:
     st.title("📊 Panel de Datos")
     st.markdown("---")
     m3_cap = st.number_input("Aportación Inicial (€)", value=5000, step=500)
-    m3_ap = st.number_input("Inversión mensual constante (€)", value=150, step=50) # Actualizado a 150€ como acordamos
+    m3_ap = st.number_input("Inversión mensual constante (€)", value=150, step=50)
     m3_anios = st.slider("Horizonte de Inversión (Años)", 5, 40, value=15)
     
     st.markdown("### 📉 Factor Macro")
-    m3_inf = st.number_input("Inflación media anual (%)", value=2.5, step=0.1) # Inflación realista España últimos 15 años
+    m3_inf = st.number_input("Inflación media anual (%)", value=2.5, step=0.1)
     
     st.markdown("---")
     st.caption("Desarrollado por Raúl Fuster | Data Finance")
@@ -63,13 +63,8 @@ aportado_real[0] = m3_cap
 inf_mensual = (m3_inf / 100) / 12
 
 for m in range(1, meses + 1):
-    # Simulación de inversión
     sims[m] = sims[m-1] * (1 + np.random.normal(0.08 / 12, 0.15 / np.sqrt(12), 200)) + m3_ap
-    
-    # Dinero nominal guardado en el cajón
     aportado[m] = aportado[m-1] + m3_ap
-    
-    # Poder adquisitivo real (descontando inflación mensual)
     aportado_real[m] = aportado_real[m-1] * (1 - inf_mensual) + m3_ap
 
 p10 = np.percentile(sims, 10, axis=1)
@@ -84,7 +79,6 @@ st.markdown("### 🏦 El coste de no hacer nada (Dinero en el banco)")
 banco1, banco2 = st.columns(2)
 banco1.metric("Dinero acumulado (Línea Roja)", f"{aportado[-1]:,.0f} €", "Lo que marcará el banco")
 
-# Cálculo de la pérdida por inflación para el KPI
 perdida_inflacion = aportado[-1] - aportado_real[-1]
 banco2.metric("Poder adquisitivo real", f"{aportado_real[-1]:,.0f} €", f"-{perdida_inflacion:,.0f} € devorados por la inflación", delta_color="inverse")
 
@@ -99,17 +93,12 @@ kpi3.metric("☀️ Mejor Escenario (Expansión)", f"{p90[-1]:,.0f} €")
 # ==========================================
 fig = go.Figure()
 
-# Rango del mercado (Sombra verde)
 fig.add_trace(go.Scatter(x=list(t_eje)+list(t_eje)[::-1], y=list(p90)+list(p10)[::-1], fill='toself', fillcolor='rgba(34, 197, 94, 0.15)', line=dict(color='rgba(255,255,255,0)'), name='Rango del Mercado Real'))
-
-# Línea de inversión media
 fig.add_trace(go.Scatter(x=t_eje, y=p50, mode='lines', name='Rentabilidad Mediana Esperada', line=dict(color='#22c55e', width=3)))
-
-# Línea del banco (Nominal)
 fig.add_trace(go.Scatter(x=t_eje, y=aportado, mode='lines', name='Dinero en el banco (Espejismo)', line=dict(color='#ef4444', width=2)))
-
-# Línea de la Inflación (Poder adquisitivo real)
 fig.add_trace(go.Scatter(x=t_eje, y=aportado_real, mode='lines', name='Valor real tras Inflación', line=dict(color='#f97316', width=2, dash='dot')))
 
 fig.update_layout(template="simple_white", hovermode="x unified", height=500, margin=dict(t=20, b=50), yaxis_title="Patrimonio Acumulado (€)", legend=leyenda_movil)
-st.plotly_chart(fig, use_container_width=True, config={'scrollZoom': False, 'displayModeBar': False, 'staticPlot': True})
+
+# Línea corregida con el nuevo estándar de Streamlit
+st.plotly_chart(fig, width='stretch', config={'scrollZoom': False, 'displayModeBar': False, 'staticPlot': True})
