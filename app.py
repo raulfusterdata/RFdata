@@ -59,7 +59,7 @@ with st.sidebar:
 # ==========================================
 # ESTRUCTURA DE PESTAÑAS (Efecto Escaparate / FOMO)
 # ==========================================
-st.markdown("<p style='text-align: center; color: #64748b; font-size: 14px; font-style: italic;'>👉 Desplaza las pestañas superiores para ver las fases completas del diagnóstico patrimonial 👆</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #64748b; font-size: 14px; font-style: italic;'>👉 Desplaza las pestañas inferiores para ver las fases completas del diagnóstico patrimonial 👇</p>", unsafe_allow_html=True)
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📊 1. Simulador Estocástico", 
     "🔒 2. Test de Salud Financiera", 
