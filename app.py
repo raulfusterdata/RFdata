@@ -1,8 +1,3 @@
-Aquí tienes el código completo y actualizado para tu archivo de GitHub. He adaptado el texto exactamente como me has pedido: manteniendo tu enfoque de "Ficha Clínica Patrimonial", eliminando la condición de la palabra clave para que sea un contacto directo por mensaje privado, y personalizando sutilmente el enfoque técnico para cada una de las pestañas bloqueadas.
-
-Copia y pega este bloque entero para actualizar tu web:
-
-```python
 import streamlit as st
 import pandas as pd
 import numpy as np
