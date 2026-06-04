@@ -14,6 +14,17 @@ st.markdown("""
     .card-blue { background-color: #f0f9ff; border-left: 5px solid #0ea5e9; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
     .card-lock { background-color: #f8fafc; border-left: 5px solid #64748b; padding: 20px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
     h1, h2, h3, h4 { color: #0f172a; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    /* Hacer los títulos de las pestañas más grandes y visibles */
+    .stTabs [data-baseweb="tab-list"] button {
+        font-size: 16px !important;
+        font-weight: 600 !important;
+        color: #475569;
+    }
+    /* Resaltar la pestaña que está seleccionada activa */
+    .stTabs [data-baseweb="tab-list"] button[aria-selected="true"] {
+        color: #0ea5e9 !important;
+        border-bottom-color: #0ea5e9 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -48,6 +59,7 @@ with st.sidebar:
 # ==========================================
 # ESTRUCTURA DE PESTAÑAS (Efecto Escaparate / FOMO)
 # ==========================================
+st.markdown("<p style='text-align: center; color: #64748b; font-size: 14px; font-style: italic;'>👉 Desplaza las pestañas superiores para ver las fases completas del diagnóstico patrimonial 👆</p>", unsafe_allow_html=True)
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📊 1. Simulador Estocástico", 
     "🔒 2. Test de Salud Financiera", 
