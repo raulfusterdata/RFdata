@@ -162,5 +162,3 @@ with tab5:
         <p style="font-size: 14px; color: #0f172a;"><b>Módulo restringido.</b> Requiere la apertura de tu Ficha Clínica Patrimonial y la consolidación estructurada de todas tus variables. Escríbeme un mensaje privado para generar tu informe final con datos reales.</p>
     </div>
     """, unsafe_allow_html=True)
-
-```
