@@ -4,7 +4,7 @@ import numpy as np
 import plotly.graph_objects as go
 
 # ==========================================
-# CONFIGURACIÓN Y ESTILOS (Versión Quirúrgica)
+# CONFIGURACIÓN Y ESTILOS
 # ==========================================
 st.set_page_config(page_title="RFData - Simulador Montecarlo", page_icon="📈", layout="wide")
 
@@ -12,19 +12,7 @@ st.markdown("""
     <style>
     .main { background-color: #f8fafc; }
     .card-blue { background-color: #f0f9ff; border-left: 5px solid #0ea5e9; padding: 20px; border-radius: 5px; margin-bottom: 20px; }
-    .card-lock { background-color: #f8fafc; border-left: 5px solid #64748b; padding: 20px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
     h1, h2, h3, h4 { color: #0f172a; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    /* Hacer los títulos de las pestañas más grandes y visibles */
-    .stTabs [data-baseweb="tab-list"] button {
-        font-size: 16px !important;
-        font-weight: 600 !important;
-        color: #475569;
-    }
-    /* Resaltar la pestaña que está seleccionada activa */
-    .stTabs [data-baseweb="tab-list"] button[aria-selected="true"] {
-        color: #0ea5e9 !important;
-        border-bottom-color: #0ea5e9 !important;
-    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -57,18 +45,6 @@ with st.sidebar:
     st.caption("Desarrollado por Raúl Fuster | Data Finance")
 
 # ==========================================
-# ESTRUCTURA DE PESTAÑAS (Efecto Escaparate / FOMO)
-# ==========================================
-st.markdown("<p style='text-align: center; color: #64748b; font-size: 14px; font-style: italic;'>👉 Desplaza las pestañas inferiores para ver las fases completas del diagnóstico patrimonial 👇</p>", unsafe_allow_html=True)
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "📊 1. Simulador Estocástico", 
-    "🔒 2. Test de Salud Financiera", 
-    "🔒 3. Optimización Fiscal (IRPF)",
-    "🔒 4. Estrategia Operativa",
-    "🔒 5. Informe Patrimonial (IA)"
-])
-
-# ==========================================
 # CÁLCULO MATEMÁTICO (Motor del Simulador)
 # ==========================================
 meses = m3_anios * 12
@@ -92,85 +68,30 @@ p50 = np.percentile(sims, 50, axis=1)
 p90 = np.percentile(sims, 90, axis=1)
 t_eje = np.linspace(0, m3_anios, meses + 1)
 
-# ------------------------------------------
-# PESTAÑA 1: Módulo Abierto (Simulador Público)
-# ------------------------------------------
-with tab1:
-    st.markdown("### 🏦 El coste de no hacer nada (Dinero en el banco)")
-    banco1, banco2 = st.columns(2)
-    banco1.metric("Dinero acumulado (Línea Roja)", f"{aportado[-1]:,.0f} €", "Lo que marcará el banco")
-    
-    perdida_inflacion = aportado[-1] - aportado_real[-1]
-    banco2.metric("Poder adquisitivo real", f"{aportado_real[-1]:,.0f} €", f"-{perdida_inflacion:,.0f} € devorados por la inflación", delta_color="inverse")
-    
-    st.markdown("### 📈 El poder de la estrategia (Dinero invertido)")
-    kpi1, kpi2, kpi3 = st.columns(3)
-    kpi1.metric("⛈️ Peor Escenario (Crisis/Mala suerte)", f"{p10[-1]:,.0f} €")
-    kpi2.metric("⛅ Escenario Probable (Mediana)", f"{p50[-1]:,.0f} €")
-    kpi3.metric("☀️ Mejor Escenario (Expansión)", f"{p90[-1]:,.0f} €")
-    
-    # Gráfico de Plotly
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=list(t_eje)+list(t_eje)[::-1], y=list(p90)+list(p10)[::-1], fill='toself', fillcolor='rgba(34, 197, 94, 0.15)', line=dict(color='rgba(255,255,255,0)'), name='Rango del Mercado Real'))
-    fig.add_trace(go.Scatter(x=t_eje, y=p50, mode='lines', name='Rentabilidad Mediana Esperada', line=dict(color='#22c55e', width=3)))
-    fig.add_trace(go.Scatter(x=t_eje, y=aportado, mode='lines', name='Dinero en el banco (Espejismo)', line=dict(color='#ef4444', width=2)))
-    fig.add_trace(go.Scatter(x=t_eje, y=aportado_real, mode='lines', name='Valor real tras Inflación', line=dict(color='#f97316', width=2, dash='dot')))
-    
-    fig.update_layout(template="simple_white", hovermode="x unified", height=500, margin=dict(t=20, b=50), yaxis_title="Patrimonio Acumulado (€)", legend=leyenda_movil)
-    st.plotly_chart(fig, width='stretch', config={'scrollZoom': False, 'displayModeBar': False, 'staticPlot': True})
+# ==========================================
+# RENDERIZADO DEL MÓDULO PÚBLICO
+# ==========================================
+st.markdown("## 📊 1. Simulador Estocástico")
 
-# ------------------------------------------
-# PESTAÑA 2: locked - Test de Salud Financiera
-# ------------------------------------------
-with tab2:
-    st.markdown("### 🩺 Auditoría de Flujos de Caja e Índice de Salud")
-    st.markdown("""
-    <div class="card-lock">
-        <h4 style="margin-top:0; color: #64748b;">🔒 Acceso Restringido</h4>
-        <p style="font-size: 15px; color: #475569;">Esta sección realiza una auditoría completa de tus flujos de entrada y salida de capital para calcular tu Índice de Salud Financiera frente a métricas de eficiencia teórica.</p>
-        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
-        <p style="font-size: 14px; color: #0f172a;"><b>Módulo restringido.</b> Requiere la apertura de tu Ficha Clínica Patrimonial y una auditoría estructurada de tus flujos de caja. Escríbeme un mensaje privado para evaluar la salud de tus cuentas con datos reales.</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-# ------------------------------------------
-# PESTAÑA 3: locked - Optimización Fiscal
-# ------------------------------------------
-with tab3:
-    st.markdown("### ⚖️ Planificación Fiscal Avanzada (Neto post-IRPF)")
-    st.markdown("""
-    <div class="card-lock">
-        <h4 style="margin-top:0; color: #64748b;">🔒 Acceso Restringido</h4>
-        <p style="font-size: 15px; color: #475569;">Cálculo del impacto real del impuesto del ahorro en el IRPF (escalas del 19% al 28%) aplicado a los escenarios estocásticos de tu patrimonio acumulado según tu Comunidad Autónoma.</p>
-        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
-        <p style="font-size: 14px; color: #0f172a;"><b>Módulo restringido.</b> Requiere la apertura de tu Ficha Clínica Patrimonial y un análisis estructurado de tu impacto impositivo. Escríbeme un mensaje privado para evaluar tu escenario fiscal con datos reales.</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-# ------------------------------------------
-# PESTAÑA 4: locked - Estrategia Operativa
-# ------------------------------------------
-with tab4:
-    st.markdown("### 🧠 Vehículos de Inversión y Asset Allocation")
-    st.markdown("""
-    <div class="card-lock">
-        <h4 style="margin-top:0; color: #64748b;">🔒 Acceso Restringido</h4>
-        <p style="font-size: 15px; color: #475569;">Fase operativa para la determinación de vehículos eficientes. Diseño de carteras diversificadas globalmente mediante Fondos Indexados de bajo coste y estrategias DCA automatizadas.</p>
-        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
-        <p style="font-size: 14px; color: #0f172a;"><b>Módulo restringido.</b> Requiere la apertura de tu Ficha Clínica Patrimonial y un diseño estructurado de tu asignación de activos. Escríbeme un mensaje privado para modelar tu cartera con datos reales.</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-# ------------------------------------------
-# PESTAÑA 5: locked - Exportar Informe IA
-# ------------------------------------------
-with tab5:
-    st.markdown("### 📋 Generación del Informe de Planificación Patrimonial (IA)")
-    st.markdown("""
-    <div class="card-lock">
-        <h4 style="margin-top:0; color: #64748b;">🔒 Acceso Restringido</h4>
-        <p style="font-size: 15px; color: #475569;">Procesamiento algorítmico que recopila todas tus variables cuantitativas y cualitativas para la redacción automática de tu hoja de ruta patrimonial estructurada en formato PDF.</p>
-        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
-        <p style="font-size: 14px; color: #0f172a;"><b>Módulo restringido.</b> Requiere la apertura de tu Ficha Clínica Patrimonial y la consolidación estructurada de todas tus variables. Escríbeme un mensaje privado para generar tu informe final con datos reales.</p>
-    </div>
-    """, unsafe_allow_html=True)
+st.markdown("### 🏦 El coste de no hacer nada (Dinero en el banco)")
+banco1, banco2 = st.columns(2)
+banco1.metric("Dinero acumulado (Línea Roja)", f"{aportado[-1]:,.0f} €", "Lo que marcará el banco")
+    
+perdida_inflacion = aportado[-1] - aportado_real[-1]
+banco2.metric("Poder adquisitivo real", f"{aportado_real[-1]:,.0f} €", f"-{perdida_inflacion:,.0f} € devorados por la inflación", delta_color="inverse")
+    
+st.markdown("### 📈 El poder de la estrategia (Dinero invertido)")
+kpi1, kpi2, kpi3 = st.columns(3)
+kpi1.metric("⛈️ Peor Escenario (Crisis/Mala suerte)", f"{p10[-1]:,.0f} €")
+kpi2.metric("⛅ Escenario Probable (Mediana)", f"{p50[-1]:,.0f} €")
+kpi3.metric("☀️ Mejor Escenario (Expansión)", f"{p90[-1]:,.0f} €")
+    
+# Gráfico de Plotly
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=list(t_eje)+list(t_eje)[::-1], y=list(p90)+list(p10)[::-1], fill='toself', fillcolor='rgba(34, 197, 94, 0.15)', line=dict(color='rgba(255,255,255,0)'), name='Rango del Mercado Real'))
+fig.add_trace(go.Scatter(x=t_eje, y=p50, mode='lines', name='Rentabilidad Mediana Esperada', line=dict(color='#22c55e', width=3)))
+fig.add_trace(go.Scatter(x=t_eje, y=aportado, mode='lines', name='Dinero en el banco (Espejismo)', line=dict(color='#ef4444', width=2)))
+fig.add_trace(go.Scatter(x=t_eje, y=aportado_real, mode='lines', name='Valor real tras Inflación', line=dict(color='#f97316', width=2, dash='dot')))
+    
+fig.update_layout(template="simple_white", hovermode="x unified", height=500, margin=dict(t=20, b=50), yaxis_title="Patrimonio Acumulado (€)", legend=leyenda_movil)
+st.plotly_chart(fig, width='stretch', config={'scrollZoom': False, 'displayModeBar': False, 'staticPlot': True})
